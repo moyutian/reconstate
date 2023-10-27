@@ -28,9 +28,6 @@ keywords = [
     "modelling-framework",
     "highway-network",
     "highway-traffic",
-    "rollout",
-    "radial-basis-function",
-    "inverse-distance-weighting",
 ]
 dynamic = ["version"]
 
