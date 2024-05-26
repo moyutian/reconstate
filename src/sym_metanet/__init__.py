@@ -1,3 +1,5 @@
+__version__ = "1.1.0.post1"
+
 __all__ = [
     "engines",
     "CongestedDestination",
