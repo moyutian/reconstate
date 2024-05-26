@@ -57,7 +57,7 @@ class Node(ElementBase):
         if len(links_down) == 1:
             return first(links_down)[-1].states["rho"][0]
         rho_firsts = engine.vcat(
-            *(dlink.states["rho"][-1] for _, _, dlink in links_down)
+            *(dlink.states["rho"][0] for _, _, dlink in links_down)
         )
         return engine.nodes.get_downstream_density(rho_firsts)
 
