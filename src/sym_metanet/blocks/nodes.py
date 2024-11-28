@@ -108,12 +108,23 @@ class Node(ElementBase):
         if n_up == 0:
             v = v_o
             q = q_o
-        elif n_up == 1:
+        # elif n_up == 1:
+        #     link_up = next(iter(links_up))[-1]
+        #     v = link_up.states["v"][-1]
+        #     q = link_up.get_flow(engine)[-1]
+        #     if q_o is not None:
+        #         q += q_o  # type: ignore[assignment,operator]
+        
+        elif n_up == 1:#此时下游也可能需要分流
             link_up = next(iter(links_up))[-1]
             v = link_up.states["v"][-1]
-            q = link_up.get_flow(engine)[-1]
-            if q_o is not None:
-                q += q_o  # type: ignore[assignment,operator]
+            q_last = link_up.get_flow(engine)[-1]
+            links_down: Collection[
+                tuple["Node", "Node", "Link[VarType]"]
+            ] = net.out_links(self)
+            betas = engine.vcat(*(dlink.disturbances["turningrate"] for _, _, dlink in links_down))
+            q = engine.nodes.get_upstream_flow(q_last, link.disturbances["turningrate"], betas, q_o) #q_o在这里处理
+    
         else:
             v_last = []
             q_last = []
@@ -125,8 +136,9 @@ class Node(ElementBase):
             links_down: Collection[
                 tuple["Node", "Node", "Link[VarType]"]
             ] = net.out_links(self)
-            betas = engine.vcat(*(dlink.turnrate for _, _, dlink in links_down))
-
+            # betas = engine.vcat(*(dlink.turnrate for _, _, dlink in links_down))
+            betas = engine.vcat(*(dlink.disturbances["turningrate"] for _, _, dlink in links_down))
             v = engine.nodes.get_upstream_speed(q_last, v_last)
-            q = engine.nodes.get_upstream_flow(q_last, link.turnrate, betas, q_o)
+            # q = engine.nodes.get_upstream_flow(q_last, link.turnrate, betas, q_o)
+            q = engine.nodes.get_upstream_flow(q_last, link.disturbances["turningrate"], betas, q_o)
         return v, q  # type: ignore[return-value]

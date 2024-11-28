@@ -81,7 +81,7 @@ class MainstreamOrigin(Origin[VarType]):
     """
 
     _states = {"w"}
-    _actions = {"r"}
+    _actions = {"v_ctrl"}
     _disturbances = {"d"}
 
     def init_vars(

@@ -37,8 +37,8 @@ def create_demands(time: np.ndarray) -> np.ndarray:
 T = 10 / 3600
 Tfin = 2.5
 time = np.arange(0, Tfin, T)
-L = 1
-lanes = 2
+L = 1   #length of each segment
+lanes = 2 
 C = (4000, 2000)
 tau = 18 / 3600
 kappa = 40

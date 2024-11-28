@@ -112,6 +112,30 @@ class LinksEngineBase(ABC):
         flow
             The flow in each link's segment.
         """
+    @staticmethod
+    @abstractmethod
+    def get_acci_flow(rho, v, lanes, segment_with_acci, lane_drop,lane_capacity):
+        """Computes the flows of the link's segments, according to [1, Equation 3.1].
+
+        Parameters
+        ----------
+        rho
+            Densities of the link's segments.
+        v_free
+            Speeds of the link's segments.
+        lanes
+            Number of lanes in the link.
+        acci
+            The segment with an accident
+        lane_drop
+            The lane drop caused by the accident, which reflect the severity of the accident
+        lane_capacity
+            The capacity of one one lane
+        Returns
+        -------
+        flow
+            The flow in each link's segment.
+        """
 
     @staticmethod
     @abstractmethod

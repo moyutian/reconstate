@@ -50,6 +50,12 @@ class LinksEngine(LinksEngineBase, Generic[VarType]):
     @staticmethod
     def get_flow(rho: VarType, v: VarType, lanes: VarType) -> VarType:
         return rho * v * lanes
+    
+    @staticmethod
+    def get_acci_flow(rho: VarType, v: VarType, lanes: VarType, segment_with_acci:int, lane_drop:float, lane_capacity:Union[VarType, float]) -> VarType:
+        flow = LinksEngine.get_flow(rho, v ,lanes)
+        flow[segment_with_acci] = cs.min(flow[segment_with_acci],lane_capacity*(lanes-lane_drop) )
+        return flow
 
     @staticmethod
     def step_density(
